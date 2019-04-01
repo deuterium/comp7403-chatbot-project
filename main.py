@@ -1,9 +1,8 @@
 from flask import Flask, request, make_response, jsonify
 from loguru import logger
-import requests
 from bs4 import BeautifulSoup
+import requests
 import re
-import json # maybe not needed
 
 app = Flask(__name__)
 
@@ -19,8 +18,8 @@ def webhook():
     except AttributeError:
         return 'json error'
 
-    logger.debug("Intent: {}", intent)
     logger.debug("Full Request: \n {}", req)
+    logger.debug("Intent: {}", intent)
 
     if intent == 'testIntent':
         res = 'testIntent'
@@ -39,11 +38,6 @@ def webhook():
     # print('Response: ' + res)
 
     return make_response(jsonify({'fulfillmentText': res}))
-
-
-@app.route('/yeet', methods=['GET'])
-def test():
-    return scrape('LOVEYY')
 
 def scrape(plate):
     if re.match("^[a-zA-Z0-9]{2,6}$", plate) is None:
@@ -65,10 +59,12 @@ def scrape(plate):
     for t in ticket_amounts:
         total += float(t.text.strip().replace('$',''))
 
+    logger.debug("plate: {} tickets: {} amount: {}", plate, len(rst), total)
+
     if len(rst) == 0:
         return "There are no parking tickets for {}.".format(plate)
     else:
-        return "{} has {} parking tickets owing {}".format(plate, len(rst), '${:,.2f}'.format(total))
+        return "{} has {} parking tickets owing {}.".format(plate, len(rst), '${:,.2f}'.format(total))
 
 if __name__ == "__main__":
     app.run()
