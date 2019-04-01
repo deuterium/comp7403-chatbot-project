@@ -21,12 +21,14 @@ def webhook():
     logger.debug("Full Request: \n {}", req)
     logger.debug("Intent: {}", intent)
 
-    if intent == 'testIntent':
-        res = 'testIntent'
+    if intent == 'top2':
+        res = "{}\n{}".format(scrape('LOVEYY'),scrape('CD996M'))
     elif intent == 'lookupPlate':
         res = scrape(req.get('queryResult').get('parameters').get('any'))
     else:
-        logger.error('Unexpected action.')
+        err = 'Unexpected action.'
+        logger.error(err)
+        res = err
 
     return make_response(jsonify({'fulfillmentText': res}))
 
