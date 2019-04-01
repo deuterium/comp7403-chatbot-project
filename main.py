@@ -1,6 +1,7 @@
 from flask import Flask, request, make_response, jsonify
+from loguru import logger
 import requests
-import json
+import json # maybe not needed
 
 app = Flask(__name__)
 
@@ -12,10 +13,13 @@ def index():
 def webhook():
     req = request.get_json(silent=True, force=True)
     try:
-        intent = req.get('queryResult').get('action')
+        intent = req.get('queryResult').get('intent').get('displayName')
     except AttributeError:
         return 'json error'
-    print("Intent: {}".format(intent))
+
+    logger.debug("Intent: {}".format(intent))
+    logger.debug("Full Request: \n {}".format(req))
+
     # if action == 'weather':
     #     res = weather(req)
     # elif action == 'weather.activity':
@@ -32,7 +36,7 @@ def webhook():
     # print('Action: ' + action)
     # print('Response: ' + res)
 
-    return make_response(jsonify({'fulfillmentText': "intent {}".format(action)}))
+    return make_response(jsonify({'fulfillmentText': "intent {}".format(intent)}))
 
 if __name__ == "__main__":
     app.run()
