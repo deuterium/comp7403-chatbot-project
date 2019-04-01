@@ -25,17 +25,8 @@ def webhook():
         res = 'testIntent'
     elif intent == 'lookupPlate':
         res = scrape(req.get('queryResult').get('parameters').get('any'))
-    # elif intent == 'weather.condition':
-    #     res = weather_condition(req)
-    # elif intent == 'weather.outfit':
-    #     res = weather_outfit(req)
-    # elif intent == 'weather.temperature':
-    #     res = weather_temperature(req)
     else:
         logger.error('Unexpected action.')
-
-    # print('Action: ' + action)
-    # print('Response: ' + res)
 
     return make_response(jsonify({'fulfillmentText': res}))
 
