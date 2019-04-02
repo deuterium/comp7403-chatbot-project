@@ -1,3 +1,7 @@
+# Chatbot for looking up Impark tickets
+# Used with dialogflow for "front end"
+# chriswood.ca@gmail.com
+#
 from flask import Flask, request, make_response, jsonify
 from loguru import logger
 from bs4 import BeautifulSoup
@@ -6,10 +10,12 @@ import re
 
 app = Flask(__name__)
 
+# ping/health-check
 @app.route('/')
 def index():
-    return 'Hello World!'
+    return 'pong'
 
+# This is the DialogFlow webhook for fullfillment
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
