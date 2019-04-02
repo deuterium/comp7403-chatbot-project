@@ -15,7 +15,7 @@ app = Flask(__name__)
 def index():
     return 'pong'
 
-# This is the DialogFlow webhook for fullfillment
+# This is the DialogFlow webhook for fulfillment
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
