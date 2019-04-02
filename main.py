@@ -23,7 +23,7 @@ def webhook():
 
     if intent == 'top2':
         res = "{}\n{}".format(scrape('LOVEYY'),scrape('CD996M'))
-    elif intent == 'lookupPlate':
+    elif intent == 'lookupPlate' or intent == 'questionWithoutPlate-custom':
         res = scrape(req.get('queryResult').get('parameters').get('any'))
     else:
         err = 'Unexpected action.'
